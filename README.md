@@ -1,7 +1,7 @@
-# When will the 1 come?
+# Times Bot
 #### _Live: [http://whenwillthe1come.schlosser.io/](http://whenwillthe1come.schlosser.io/)_
 
-The only data that matters:  How far is the 1 train from Columbia?
+How crazy in the NYTimes right now?
 
 When will the 1 come? is built with [Flask][flask], [Gulp][gulp], and [SCSS][scss].
 

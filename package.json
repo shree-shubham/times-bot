@@ -1,8 +1,8 @@
 {
-  "name": "HappyTimes",
+  "name": "TimesBot",
   "license": "MIT",
   "version": "0.0.1",
-  "description": "Find out how happy or sad the NYTimes is right now.",
+  "description": "Get Alterted when the NYTimes starts goes nuts",
   "scripts": {},
   "dependencies": {
     "gulp": "^3.9.0",
@@ -28,6 +28,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/danrschlosser/happy-times.git"
+    "url": "git://github.com/danrschlosser/times-bot.git"
   }
 }
