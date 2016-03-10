@@ -1,0 +1,7 @@
+node_modules
+/static/dist/*
+/include
+/lib
+/bin
+*.pyc
+secrets.py
