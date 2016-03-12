@@ -23,32 +23,41 @@ class ExpirationManager(object):
 
     def compute_expiration(self, story):
         """
+        Computes an expiration intended to ensure that the redis database
+        always has the same number of variables in it.  The first inserted will
+        expire when the last one is inserted.
+
         ((startTime - earliestTime) + createTime + lifetime) - now
         """
         self.earliest_create_date = min(self.earliest_create_date,
-                                        story['createDate'])
+                                        story['updateDate'])
         now = time.time()
         offset = self.start_time - self.earliest_create_date
 
-        return int((story['createDate'] +
+        return int((story['updateDate'] +
                     offset +
-                    AVG_TIME_BETWEEN_COMMENTS) - now)
+                    self.AVG_TIME_BETWEEN_COMMENTS) - now)
 
 conn = Redis()
+conn.flushdb()
 exp = ExpirationManager()
 
 while True:
+    # Read from line
     line = stdin.readline()
     story = json.loads(line)
-    create_date = story['createDate']
+    create_date = story['updateDate']
+    # find the expiration we're going to be using.
     expiration = exp.compute_expiration(story)
-    print expiration
 
+    # Output to db.
     conn.hmset(create_date, story)
     conn.expire(create_date, expiration)
 
+    # Print for records.
     print '[INSERT]', json.dumps({
         'create_date': create_date,
         'delta': story['delta'],
-        'expiration': expiration
+        'expiration': expiration,
+        'body': story['commentBody']
     })

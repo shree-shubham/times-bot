@@ -1,9 +1,8 @@
 # Times Bot
-#### _Live: [http://whenwillthe1come.schlosser.io/](http://whenwillthe1come.schlosser.io/)_
 
 How crazy in the NYTimes right now?
 
-When will the 1 come? is built with [Flask][flask], [Gulp][gulp], and [SCSS][scss].
+Times Bot is built with [Flask][flask], [Gulp][gulp], and [SCSS][scss].
 
 ## Data
 
@@ -11,38 +10,165 @@ Example data:
 
 ```javascript
 {
-  "entity": [
-    {
-      "id": "000027", 
-      "trip_update": {
-        "stop_time_update": [
-          {
-            "arrival": {
-              "time": "Wed, 10 Feb 2016 17:58:14 GMT"
-            }, 
-            "departure": {
-              "time": "Wed, 10 Feb 2016 17:58:14 GMT"
-            }, 
-            "stop_id": "116N"
-          }
-        ], 
-        "trip": {
-          "route_id": "1", 
-          "start_date": "20160210", 
-          "trip_id": "103900_1..N02R"
-        }
-      }
+    "debug": {
+        "version": 3.1
     },
-    /*  ... */
-  ], 
-  "header": {
-    "gtfs_realtime_version": "1.0", 
-    "timestamp": 1455144994
-  }
+    "status": "OK",
+    "copyright": "Copyright (c) 2016 The New York Times Company.  All Rights Reserved.",
+    "results": {
+        "comments": [{
+            "assetID": 3448909,
+            "commentID": 17868516,
+            "parentID": 17868183,
+            "statusID": 2,
+            "commentSequence": 17868516,
+            "commentBody": "In addition, think about what it could do for the homelessness problem. Instead of someone being one rent payment away from becoming homeless, if they lost their job, another would be found instantly.  Landlords would know this and the whole landlord-tenant relationship would be transformed. Or, they could relocate with government assistance.",
+            "commentTitle": "<br\/>",
+            "createDate": "1457819086",
+            "updateDate": "1457819108",
+            "approveDate": "1457819108",
+            "userID": 25036455,
+            "userDisplayName": "jstevend",
+            "userTitle": "NULL",
+            "userURL": "NULL",
+            "userLocation": "Mission Viejo, CA",
+            "editorsSelection": 0,
+            "recommendationCount": 0,
+            "commentType": "userReply",
+            "status": "approved",
+            "asset": {
+                "assetURL": "http:\/\/www.nytimes.com\/2016\/03\/13\/upshot\/the-geography-of-trumpism.html",
+                "vendorID": "lK7pDDbSbDvIEb5jpy\/a1g==",
+                "source": "url",
+                "assetID": 3448909,
+                "createDate": "1457788962",
+                "updateDate": "1457819098",
+                "taxonomies": [
+                    [{
+                        "taxonomyID": 316632,
+                        "name": "upshot"
+                    }, {
+                        "taxonomyID": 363943,
+                        "name": "The Geography of Trumpism (13up-trumpgeography)"
+                    }]
+                ],
+                "taxonomy": "upshot\/The Geography of Trumpism (13up-trumpgeography)",
+                "labels": [],
+                "text": [],
+                "properties": {
+                    "comment-list-sort-approvedate-desc": {
+                        "groupID": 1,
+                        "taxonomyID": 1
+                    },
+                    "automoderation-on": {
+                        "groupID": 2,
+                        "taxonomyID": 316632
+                    },
+                    "reached-max-com-off": {
+                        "groupID": 3,
+                        "taxonomyID": 1
+                    }
+                },
+                "all-properties": [{
+                    "name": "no-group",
+                    "description": "Not in a group",
+                    "properties": []
+                }, {
+                    "name": "comment-list-sort",
+                    "description": "Sort order to use when displaying comment listings",
+                    "properties": {
+                        "comment-list-sort-approvedate": {
+                            "id": 2,
+                            "description": "sort by approve date, oldest first"
+                        },
+                        "comment-list-sort-approvedate-desc": {
+                            "id": 3,
+                            "description": "sort by approve date, newest first"
+                        },
+                        "comment-list-sort-recommended": {
+                            "id": 4,
+                            "description": "sort by number of recommendations"
+                        },
+                        "comment-list-sort-editors": {
+                            "id": 5,
+                            "description": "sort by editors' selections"
+                        },
+                        "comment-list-sort-replies": {
+                            "id": 6,
+                            "description": "sort by replies"
+                        }
+                    }
+                }, {
+                    "name": "auto-moderation",
+                    "description": "auto-moderation on or off",
+                    "properties": {
+                        "automoderation-on": {
+                            "id": 7,
+                            "description": "auto-moderation on"
+                        },
+                        "automoderation-off": {
+                            "id": 8,
+                            "description": "auto-moderation off"
+                        }
+                    }
+                }, {
+                    "name": "reached-max-com",
+                    "description": "If we reached the max number of COMS per parent taxonomy",
+                    "properties": {
+                        "reached-max-com-on": {
+                            "id": 9,
+                            "description": "reached the max number of COMS"
+                        },
+                        "reached-max-com-off": {
+                            "id": 10,
+                            "description": "did not reach the max number of COMS"
+                        }
+                    }
+                }, {
+                    "name": "comment-style",
+                    "description": "To use inline comments or overflow page",
+                    "properties": {
+                        "inline-comments": {
+                            "id": 11,
+                            "description": "articles having inline comments or overflow page"
+                        },
+                        "overflow": {
+                            "id": 12,
+                            "description": "comments on overflow page"
+                        }
+                    }
+                }],
+                "assetTitle": "The Geography of Trumpism (13up-trumpgeography)"
+            },
+            "replies": [],
+            "display_name": "jstevend",
+            "location": "Mission Viejo, CA"
+        }, 
+
+        ...
+        
+        ],
+        "totalCommentsReturned": 25,
+        "api_timestamp": "1457819125"
+    }
 }
 ```
 
-Each of the elements in the `entity` array are trip updates for the 1 train.  The `stop_time_update` indicates the expected arrival / departure times for the 1 train at the 116th & Broadway subway stop.  I use this data to predict arrival times.  Data is used with permission from the [MTA Open Data site](http://datamine.mta.info/).
+Each of the elements in the `comments` array are comments recently created, updated, or approved on the New York Times websites.  I use this data to predict display how frequently comments are being posted on the new york times, and alert users when comment activity is especially high or low..  Data is used with permission from the [New York Times](http://developer.nytimes.com/).
+
+## Routes of note:
+
+- `/rate`: Display the rate at which new comments are coming in.
+
+- `/`: Our sumamry / home page.
+
+- `/historgram`: A very small wrapper around the buildHistogram function, that allows the use of histograms in the API
+
+- `/entropy`: Display the entropy of our data set.
+
+- `/probability/<n_seconds>`: Display the probability that a comment occurs in the next 30 seconds.
+
+- `/data`: Simply print out all the data we have.
 
 ## Installation
 

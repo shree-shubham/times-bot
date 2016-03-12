@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 {% block body %}
+<div>
+    <p>There is a new comment on a new York Times article every <span id="rate"></span> seconds.</p>
 
+    <p id="message"></p>
 
-
+    <p>The entropy of the distribution is <span id="entropy"></span>, and the probabily of seeing a message in the next 30 seconds is <span id="probability"></span>.</p>
+</div>
+<script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/app.js') }}"></script>
 {% endblock %}

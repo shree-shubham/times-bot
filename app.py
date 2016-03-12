@@ -1,14 +1,18 @@
-"""The main application logic."""
-from flask import Flask
-from flask import jsonify, render_template
-from json_response import json_success
-from google.transit import gtfs_realtime_pb2
-import urllib2
-from protobuf_to_dict import protobuf_to_dict
-import threading
-from time import sleep
-from clean import *
+"""
+app.py
 
+The main application logic.
+
+Basic strucutre adapted from https://github.com/mikedewar/RealTimeStorytelling/
+"""
+from flask import Flask, render_template
+from json_response import json_success
+from stats import StatsManager
+from collections import Counter
+import math
+
+# Holds database state
+stats = StatsManager()
 
 # Flask
 app = Flask(__name__,
@@ -16,77 +20,57 @@ app = Flask(__name__,
             static_url_path='/static')
 app.config.from_object('config.flask_config')
 
-# MTA API url
-MTA_URL = 'http://datamine.mta.info/mta_esi.php?feed=1&key={}'.format(
-    app.config['MTA_KEY'])
+@app.route('/rate')
+def rate():
+    """Display the rate at which new comments are coming in."""
+    return json_success({
+        'rate': stats.get_rate()
+    })
 
-# State
-mta_data = {}
-best = {
-    'uptown': None,
-    'downtown': None
-}
-estimates = {
-    'uptown': 0,
-    'downtown': 0
-}
-
-
-def poll_mta():
-    """Poll MTA for new mta_data every five seconds."""
-    global mta_data, best, estimates
-    latest_timestamp = -1
-    while True:
-        feed = gtfs_realtime_pb2.FeedMessage()
-        response = urllib2.urlopen(MTA_URL)
-        feed.ParseFromString(response.read())
-        dict_data = protobuf_to_dict(feed)
-        if dict_data['header']['timestamp'] != latest_timestamp:
-            latest_timestamp = dict_data['header']['timestamp']
-            print 'UPDATE @ timestamp:', latest_timestamp
-            mta_data = filter_data(dict_data)
-            convert_timestamps(mta_data['entity'])
-            best, estimates = compute_estimates(mta_data['entity'],
-                                                best,
-                                                estimates)
-            if app.config['STDOUT']:
-                print mta_data
-        sleep(5)
-
-# Start polling the MTA
-t = threading.Thread(target=poll_mta)
-t.setDaemon(True)
-t.start()
-
+def buildHistogram():
+    """Create a histogram of the data and display that."""
+    values = stats.deltas
+    c = Counter(values)
+    z = sum(c.values())
+    return {k:v/float(z) for k,v in c.items()}
 
 @app.route('/')
 def index():
-    """"Index route."""
-    return render_template('index.html', estimates=estimates)
+    """Our sumamry / home page."""
+    return render_template('index.html')
 
+@app.route("/historgram")
+def histogram():
+    """A very small wrapper around the buildHistogram function, that allows the
+    use of histograms in the API.
+    """
+    h = buildHistogram()
+    return json_success(h)
+
+@app.route("/entropy")
+def entropy():
+    """Display the entropy of our data set."""
+    h = buildHistogram()
+    return json_success({
+        'entropy': -sum([p*math.log(p) for p in h.values()])
+    })
+
+@app.route('/probability/<n_seconds>')
+def probabiltiy(n_seconds):
+    """Display the probability that a comment occurs in the next 30 seconds."""
+    h = buildHistogram()
+
+    ## p = p_test / sum(p)
+    total = sum(stats.deltas)
+    z = float(n_seconds) / total
+    return json_success({
+        'probability': z
+    })
 
 @app.route('/data')
 def data():
-    """"Show all of our MTA data as JSON."""
-    return jsonify(mta_data)
-
-
-def _best_to_string(best):
-    return dict((k, str(v)) for k, v in best.iteritems())
-
-
-@app.route('/estimates')
-def get_estimates():
-    """Show just our estimates as JSON."""
-    return json_success({
-        'estimates': estimates,
-        'best': _best_to_string(best),
-    })
+    """Simply print out all the data we have."""
+    return json_success(stats.values)
 
 if __name__ == '__main__':
-    if app.config['STDOUT']:
-        print "Press Ctrl + C to quit."
-        while True:  # infinite loop, while the thread prints
-            pass
-    else:
-        app.run()
+    app.run()

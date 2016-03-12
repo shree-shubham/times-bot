@@ -106,7 +106,7 @@ gulp.task('run', function() {
   });
 });
 
-gulp.task('watch', ['run', 'build'], function() {
+gulp.task('watch', ['build'], function() {
   gulp.watch('./static/src/sass/**/*.scss', ['sass']);
   gulp.watch('./static/src/img/**/*', ['images']);
   gulp.watch('./static/src/font/**/*', ['fonts']);

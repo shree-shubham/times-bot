@@ -4,7 +4,8 @@ from sys import exit, stderr, argv
 try:
     import secrets
     SECRET_KEY = secrets.SECRET_KEY
-    NYT_NEWSWIRE_KEY = secrets.NYT_NEWSWIRE_KEY
+    NYT_COMMUNITY_KEY = secrets.NYT_COMMUNITY_KEY
+    NYT_ARTICLE_SEARCH_KEY = secrets.NYT_ARTICLE_SEARCH_KEY
     DEBUG = (len(argv) == 2 and argv[1] == 'debug')
     STDOUT = (len(argv) == 2 and argv[1] == 'stdout')
     META_TITLE = 'Happy Times'

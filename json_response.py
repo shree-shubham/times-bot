@@ -1,3 +1,10 @@
+"""
+json_repsonse.py
+
+A super simple library to return structured JSON responses.
+
+https://github.com/adicu/adi-website/blob/master/app/lib/json_response.py
+"""
 from flask import make_response
 import json
 
